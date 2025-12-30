@@ -62,6 +62,7 @@ class BrowserManager:
                     "--disable-setuid-sandbox",
                     "--no-sandbox",
                     "--disable-extensions",
+                    "--disable-blink-features=AutomationControlled",
                     "--disable-background-networking",
                     "--disable-sync",
                     "--disable-translate",
