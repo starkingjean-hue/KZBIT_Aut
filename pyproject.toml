@@ -1,0 +1,21 @@
+[project]
+name = "kzbit-automation"
+version = "1.0.0"
+description = "Ultra-fast browser automation for KZBIT with Telegram control"
+requires-python = ">=3.10"
+dependencies = [
+    "playwright>=1.40.0",
+    "python-telegram-bot>=21.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

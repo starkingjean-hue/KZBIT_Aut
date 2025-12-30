@@ -1,0 +1,13 @@
+.env
+accounts.json
+screenshots/
+*.session
+*.session-journal
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+env/
+logs/
+.DS_Store
+Thumbs.db
