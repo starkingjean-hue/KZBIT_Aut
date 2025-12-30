@@ -69,7 +69,7 @@ POPUP_TIMEOUT = 10000       # ms - for popup detection
 # ============================================================================
 # PARALLEL EXECUTION
 # ============================================================================
-MAX_CONCURRENT_ACCOUNTS = int(os.getenv("MAX_CONCURRENT_ACCOUNTS", "1"))
+MAX_CONCURRENT_ACCOUNTS = int(os.getenv("MAX_CONCURRENT_ACCOUNTS", "5"))
 HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
 
 # ============================================================================
