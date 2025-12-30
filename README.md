@@ -1,30 +1,39 @@
 # KZBIT Automation System
 
 Ultra-fast browser automation for time-sensitive BTC code submission on kzbit.com with Telegram control.
+# KZBIT Ultra-Fast Automation 🚀
 
-## ⚠️ Critical Constraints
+High-performance Telegram-controlled bot for BTC code submission on KZBIT.
 
-| Constraint | Value |
-|------------|-------|
-| **Code expiration** | 10 minutes |
-| **Target per account** | < 1 minute |
-| **Parallel batch size** | 3 accounts |
+## Features
+- **Parallel Processing**: Up to 5 accounts concurrently.
+- **Stealth Mode**: Advanced browser fingerprinting mitigation.
+- **Real-time Feedback**: Detailed reporting via Telegram.
+- **Crash Recovery**: Automatic browser cleanup and session management.
 
-## 🚀 Quick Start
+## Deployment Guide
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/starkingjean-hue/KZBIT_Aut.git
+   pip install -r requirements.txt
+   playwright install chromium
+   ```
+2. **Configure `.env`**:
+   - `TELEGRAM_BOT_TOKEN`: Your bot token.
+   - `HEADLESS=true`: For server performance.
+3. **Run**:
+   ```bash
+   python main.py
+   ```
 
-### 1. Install Dependencies
+## Commands
+- `/code <N>f <CODE>`: Launch automation.
+- `/status`: Check bot activity.
+- `/add_c`: Add trade account.
+- `/show`: List managed accounts.
 
-```bash
-pip install -r requirements.txt
-playwright install chromium
-```
-
-### 2. Configure Environment
-
-```bash
-# Copy template and fill in credentials
-cp .env.example .env
-```
+---
+*Locked for production stability.*
 
 Edit `.env`:
 ```ini
