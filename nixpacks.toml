@@ -1,5 +1,8 @@
+[variables]
+PLAYWRIGHT_BROWSERS_PATH = "/app/.cache/ms-playwright"
+
 [phases.setup]
-nixPkgs = ["python311", "playwright-driver.browsers"]
+nixPkgs = ["python311"]
 
 [phases.install]
 cmds = [
