@@ -1,5 +1,5 @@
 .env
-accounts.json
+# accounts.json (Removed from ignore to allow direct sync on Railway)
 screenshots/
 *.session
 *.session-journal
