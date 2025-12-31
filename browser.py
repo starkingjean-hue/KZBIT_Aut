@@ -82,7 +82,9 @@ class BrowserManager:
             except Exception as e:
                 # Silently catch to avoid crashing during shutdown
                 # This often happens if the browser process is already gone
-                print(f"Warning: Error closing browser: {e}")
+                error_msg = str(e)
+                if "Connection closed" not in error_msg and "Target page, context or browser has been closed" not in error_msg:
+                    print(f"Warning: Error closing browser: {e}")
             finally:
                 self._browser = None
 
@@ -90,7 +92,9 @@ class BrowserManager:
                 if self._playwright:
                     await self._playwright.stop()
             except Exception as e:
-                print(f"Warning: Error stopping playwright: {e}")
+                error_msg = str(e)
+                if "invalid state" not in error_msg.lower():
+                    print(f"Warning: Error stopping playwright: {e}")
             finally:
                 self._playwright = None
     

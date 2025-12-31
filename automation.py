@@ -82,9 +82,6 @@ class KZBITAutomation:
                     wait_until="domcontentloaded"
                 )
                 
-                # 📸 [1] Login_Page.png
-                await self.screenshot.capture_login_page()
-                
                 # Fill email
                 email_input = await self.page.wait_for_selector(
                     SELECTORS["email_input"],
@@ -180,9 +177,6 @@ class KZBITAutomation:
                     state="visible",
                     timeout=ELEMENT_TIMEOUT
                 )
-                
-                # 📸 BTC_Page.png
-                await self.screenshot.capture_btc_page()
             
             self.timer.metrics.navigation_ms = t.elapsed_ms
             return True
@@ -247,6 +241,9 @@ class KZBITAutomation:
                     submit_button = await self.page.wait_for_selector(SELECTORS["submit_button"], state="visible", timeout=2000)
 
             await submit_button.click(no_wait_after=True)
+            
+            # 📸 [IMPORTANT] Capture IMMEDIATELY after click as requested
+            await self.screenshot.capture_btc_click_submit(submit_num)
             
             # 4. Wait for and read popup (Fast detection)
             popup_text, status = await self.popup_monitor.wait_and_read(timeout_ms=3000)

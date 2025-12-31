@@ -240,40 +240,48 @@ class TelegramBot:
         """Task to execute workflow and report results."""
         
         async def on_account_result(result: AccountResult) -> None:
-            """Report each account result in real-time with intensive feedback."""
-            if result.success:
-                status_emoji = "✅" 
-            elif result.successful_submits > 0:
-                status_emoji = "⚠️" 
-            else:
-                status_emoji = "❌"
-            
-            # Popup Analysis
-            popups = [res.popup_text for res in result.results]
-            success_count = result.successful_submits
-            fail_count = result.failed_submits
-            total_attempted = len(popups)
-            target = command.clicks
-            
-            # Intelligent Feedback Message
-            if total_attempted == target and len(set(popups)) == 1 and success_count == target:
-                popup_summary = "✅ Tous les popups sont apparus avec succès et sont identiques."
-            else:
-                popup_summary = f"🔔 {total_attempted}/{target} popups apparus :\n"
-                popup_summary += f"• ✅ {success_count} réussis\n"
-                popup_summary += f"• ❌ {fail_count} échoués"
+            """Report each account result with grouping logic."""
+            def format_group(results_list, is_success: bool) -> str:
+                if not results_list: return ""
+                counts = {}
+                for r in results_list:
+                    msg = r.popup_text if r.popup_text else "Pas de message"
+                    counts[msg] = counts.get(msg, 0) + 1
                 
-                remaining = target - total_attempted
-                if remaining > 0:
-                    popup_summary += f"\n• ⏳ {remaining} restant(s) à afficher (non tentés)"
+                total = len(results_list)
+                emoji = "✅" if is_success else "❌"
+                label = "gagné" if is_success else "échoué"
+                if total > 1: label += "s"
                 
-                unique_messages = list(dict.fromkeys(popups))
-                if unique_messages:
-                    popup_summary += f"\n• Messages : {', '.join([m[:40] for m in unique_messages])}"
+                if len(counts) == 1:
+                    msg = list(counts.keys())[0]
+                    return f"{emoji} {total} {label}: {msg}"
+                else:
+                    details = ", ".join([f"{count} disent \"{msg}\"" for msg, count in counts.items()])
+                    return f"{emoji} {total} {label} ({details})"
 
+            success_list = [r for r in result.results if r.success]
+            fail_list = [r for r in result.results if not r.success]
+            
+            summary_lines = []
+            if fail_list:
+                summary_lines.append(format_group(fail_list, False))
+            if success_list:
+                summary_lines.append(format_group(success_list, True))
+            
+            popup_summary = "\n".join(summary_lines) if summary_lines else "🔔 Aucun résultat."
+
+            # Header Emoji
+            if result.success:
+                header_emoji = "✅"
+            elif result.successful_submits > 0:
+                header_emoji = "⚠️"
+            else:
+                header_emoji = "❌"
+            
             message = (
-                f"{status_emoji} **{result.email}**\n"
-                f"• Statut : {'SUCCÈS' if result.success else 'PARTIEL' if success_count > 0 else 'ÉCHEC'}\n"
+                f"{header_emoji} **{result.email}**\n"
+                f"• Statut : {'SUCCÈS' if result.success else 'PARTIEL' if result.successful_submits > 0 else 'ÉCHEC'}\n"
                 f"• Temps : {result.duration_seconds:.1f}s\n"
                 f"{popup_summary}"
             )
